@@ -1,0 +1,237 @@
+:root {
+  /* SAP Fiori Horizon Palette */
+  --sap-shell-bg: #111e2e;
+  --sap-shell-border: #1e334d;
+  --sap-sidebar-bg: #162438;
+  --sap-sidebar-active: #0070f2;
+  --sap-sidebar-hover: #1f324c;
+  
+  --sap-primary: #0070f2;
+  --sap-primary-hover: #0057c2;
+  --sap-primary-active: #004499;
+  --sap-primary-light: #e8f3ff;
+  
+  --sap-surface: #ffffff;
+  --sap-surface-hover: #f8fafc;
+  --sap-app-bg: #f4f6fa;
+  --sap-border: #dbe3ed;
+  --sap-border-subtle: #edf2f7;
+  
+  /* Text */
+  --sap-text-primary: #1a2533;
+  --sap-text-secondary: #57677a;
+  --sap-text-muted: #8b99aa;
+  --sap-text-inverse: #ffffff;
+
+  /* Semantic - Success (Green) */
+  --sap-success: #0d7f3e;
+  --sap-success-bg: #eaf8f0;
+  --sap-success-border: #9ee3bd;
+
+  /* Semantic - Warning (Orange/Amber) */
+  --sap-warning: #c25900;
+  --sap-warning-bg: #fff5eb;
+  --sap-warning-border: #fcd5ab;
+
+  /* Semantic - Critical / Error (Red) */
+  --sap-error: #ba1717;
+  --sap-error-bg: #fdeeee;
+  --sap-error-border: #f8b4b4;
+
+  /* Semantic - Neutral / Info (Blue) */
+  --sap-info: #0066d4;
+  --sap-info-bg: #edf6ff;
+  --sap-info-border: #b8dcff;
+
+  /* Semantic - Blocked / Inactive */
+  --sap-blocked: #4b5563;
+  --sap-blocked-bg: #f3f4f6;
+  --sap-blocked-border: #d1d5db;
+
+  /* Spacing */
+  --sap-space-xs: 4px;
+  --sap-space-sm: 8px;
+  --sap-space-md: 16px;
+  --sap-space-lg: 24px;
+  --sap-space-xl: 32px;
+
+  /* Border Radius */
+  --sap-radius-sm: 4px;
+  --sap-radius-md: 8px;
+  --sap-radius-lg: 12px;
+  --sap-radius-full: 9999px;
+
+  /* Shadows */
+  --sap-shadow-sm: 0 1px 3px rgba(18, 38, 63, 0.08);
+  --sap-shadow-md: 0 4px 12px rgba(18, 38, 63, 0.08);
+  --sap-shadow-lg: 0 10px 28px rgba(18, 38, 63, 0.12);
+  --sap-shadow-modal: 0 20px 48px rgba(11, 23, 44, 0.24);
+
+  /* Fonts */
+  --sap-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sap-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sap-font);
+  background-color: var(--sap-app-bg);
+  color: var(--sap-text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for enterprise numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c3cfdc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9aaec4;
+}
+
+/* Toast System Styling */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 440px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.toast-card {
+  pointer-events: auto;
+  border-radius: var(--sap-radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--sap-shadow-lg);
+  border: 1px solid transparent;
+  animation: toastSlideIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateY(12px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.toast-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.toast-icon-wrapper {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.toast-message {
+  font-size: 0.82rem;
+  margin-top: 4px;
+  color: var(--sap-text-secondary);
+  line-height: 1.4;
+}
+
+.toast-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--sap-text-muted);
+  padding: 2px;
+  border-radius: var(--sap-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.toast-close-btn:hover {
+  color: var(--sap-text-primary);
+}
+
+.toast-success {
+  background: #ffffff;
+  border-color: var(--sap-success-border);
+  border-left: 5px solid var(--sap-success);
+}
+.toast-success .toast-title {
+  color: var(--sap-success);
+}
+.toast-success .success-icon {
+  color: var(--sap-success);
+}
+
+.toast-error {
+  background: #ffffff;
+  border-color: var(--sap-error-border);
+  border-left: 5px solid var(--sap-error);
+}
+.toast-error .toast-title {
+  color: var(--sap-error);
+}
+.toast-error .error-icon {
+  color: var(--sap-error);
+}
+
+.toast-warning {
+  background: #ffffff;
+  border-color: var(--sap-warning-border);
+  border-left: 5px solid var(--sap-warning);
+}
+.toast-warning .toast-title {
+  color: var(--sap-warning);
+}
+.toast-warning .warning-icon {
+  color: var(--sap-warning);
+}
+
+.toast-info {
+  background: #ffffff;
+  border-color: var(--sap-info-border);
+  border-left: 5px solid var(--sap-info);
+}
+.toast-info .toast-title {
+  color: var(--sap-info);
+}
+.toast-info .info-icon {
+  color: var(--sap-info);
+}
