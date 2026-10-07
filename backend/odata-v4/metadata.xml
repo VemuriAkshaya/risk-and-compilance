@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      
+      <!-- Complex Type for Reassess Risk Parameter -->
+      <ComplexType Name="ZA_ReassessRiskParam">
+        <Property Name="RiskScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Property Name="RiskFactors" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Comments" Type="Edm.String" MaxLength="255"/>
+      </ComplexType>
+
+      <!-- Entity Type: Supplier -->
+      <EntityType Name="SupplierType">
+        <Key>
+          <PropertyRef Name="SupplierID"/>
+        </Key>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="SupplierName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="Country" Type="Edm.String" MaxLength="3"/>
+        <Property Name="Address" Type="Edm.String" MaxLength="100"/>
+        <Property Name="City" Type="Edm.String" MaxLength="40"/>
+        <Property Name="State" Type="Edm.String" MaxLength="40"/>
+        <Property Name="PostalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="ContactPerson" Type="Edm.String" MaxLength="80"/>
+        <Property Name="Email" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Phone" Type="Edm.String" MaxLength="30"/>
+        <Property Name="Category" Type="Edm.String" MaxLength="30"/>
+        <Property Name="TaxNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="Status" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LastChangedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="LastChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset"/>
+        
+        <!-- Navigation Properties -->
+        <NavigationProperty Name="_ComplianceDocuments" Type="Collection(com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.ComplianceDocumentType)"/>
+        <NavigationProperty Name="_RiskAssessments" Type="Collection(com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.RiskAssessmentType)"/>
+        <NavigationProperty Name="_Performance" Type="Collection(com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierPerformanceType)"/>
+        <NavigationProperty Name="_AuditHistory" Type="Collection(com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.AuditHistoryType)"/>
+      </EntityType>
+
+      <!-- Entity Type: Compliance Document -->
+      <EntityType Name="ComplianceDocumentType">
+        <Key>
+          <PropertyRef Name="DocumentID"/>
+        </Key>
+        <Property Name="DocumentID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="DocumentType" Type="Edm.String" MaxLength="40"/>
+        <Property Name="DocumentNumber" Type="Edm.String" MaxLength="50"/>
+        <Property Name="IssueDate" Type="Edm.Date"/>
+        <Property Name="ExpiryDate" Type="Edm.Date"/>
+        <Property Name="Status" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LastChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset"/>
+        <NavigationProperty Name="_Supplier" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </EntityType>
+
+      <!-- Entity Type: Risk Assessment -->
+      <EntityType Name="RiskAssessmentType">
+        <Key>
+          <PropertyRef Name="RiskID"/>
+        </Key>
+        <Property Name="RiskID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="RiskScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Property Name="RiskLevel" Type="Edm.String" MaxLength="10"/>
+        <Property Name="RiskFactors" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Comments" Type="Edm.String" MaxLength="255"/>
+        <Property Name="AssessmentDate" Type="Edm.Date"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LastChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset"/>
+        <NavigationProperty Name="_Supplier" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </EntityType>
+
+      <!-- Entity Type: Supplier Performance -->
+      <EntityType Name="SupplierPerformanceType">
+        <Key>
+          <PropertyRef Name="PerformanceID"/>
+        </Key>
+        <Property Name="PerformanceID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="QualityScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Property Name="DeliveryScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Property Name="OverallScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Property Name="PerformanceStatus" Type="Edm.String" MaxLength="20"/>
+        <Property Name="ReviewDate" Type="Edm.Date"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LastChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset"/>
+        <NavigationProperty Name="_Supplier" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </EntityType>
+
+      <!-- Entity Type: Audit History -->
+      <EntityType Name="AuditHistoryType">
+        <Key>
+          <PropertyRef Name="AuditID"/>
+        </Key>
+        <Property Name="AuditID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="UserID" Type="Edm.String" MaxLength="12"/>
+        <Property Name="Action" Type="Edm.String" MaxLength="40"/>
+        <Property Name="OldStatus" Type="Edm.String" MaxLength="20"/>
+        <Property Name="NewStatus" Type="Edm.String" MaxLength="20"/>
+        <Property Name="ChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="Comments" Type="Edm.String" MaxLength="255"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LastChangedAt" Type="Edm.DateTimeOffset"/>
+        <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset"/>
+        <NavigationProperty Name="_Supplier" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </EntityType>
+
+      <!-- Bound Actions for Supplier -->
+      <Action Name="approveSupplier" IsBound="true">
+        <Parameter Name="it" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+        <ReturnType Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </Action>
+
+      <Action Name="rejectSupplier" IsBound="true">
+        <Parameter Name="it" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+        <Parameter Name="Comments" Type="Edm.String" MaxLength="255"/>
+        <ReturnType Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </Action>
+
+      <Action Name="blockSupplier" IsBound="true">
+        <Parameter Name="it" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+        <Parameter Name="Comments" Type="Edm.String" MaxLength="255"/>
+        <ReturnType Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </Action>
+
+      <Action Name="unblockSupplier" IsBound="true">
+        <Parameter Name="it" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+        <ReturnType Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </Action>
+
+      <Action Name="reassessRisk" IsBound="true">
+        <Parameter Name="it" Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+        <Parameter Name="RiskScore" Type="Edm.Decimal" Precision="5" Scale="2"/>
+        <Parameter Name="RiskFactors" Type="Edm.String" MaxLength="255"/>
+        <Parameter Name="Comments" Type="Edm.String" MaxLength="255"/>
+        <ReturnType Type="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType"/>
+      </Action>
+
+      <!-- Entity Container -->
+      <EntityContainer Name="Container">
+        <EntitySet Name="Supplier" EntityType="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierType">
+          <NavigationPropertyBinding Path="_ComplianceDocuments" Target="ComplianceDocument"/>
+          <NavigationPropertyBinding Path="_RiskAssessments" Target="RiskAssessment"/>
+          <NavigationPropertyBinding Path="_Performance" Target="SupplierPerformance"/>
+          <NavigationPropertyBinding Path="_AuditHistory" Target="AuditHistory"/>
+        </EntitySet>
+        <EntitySet Name="ComplianceDocument" EntityType="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.ComplianceDocumentType">
+          <NavigationPropertyBinding Path="_Supplier" Target="Supplier"/>
+        </EntitySet>
+        <EntitySet Name="RiskAssessment" EntityType="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.RiskAssessmentType">
+          <NavigationPropertyBinding Path="_Supplier" Target="Supplier"/>
+        </EntitySet>
+        <EntitySet Name="SupplierPerformance" EntityType="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.SupplierPerformanceType">
+          <NavigationPropertyBinding Path="_Supplier" Target="Supplier"/>
+        </EntitySet>
+        <EntitySet Name="AuditHistory" EntityType="com.sap.gateway.srvd.zui_supplier_manage_o4.v0001.AuditHistoryType">
+          <NavigationPropertyBinding Path="_Supplier" Target="Supplier"/>
+        </EntitySet>
+      </EntityContainer>
+
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

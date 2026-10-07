@@ -1,0 +1,58 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZC_Supplier_M alias Supplier
+{
+  use create;
+  use update;
+  use delete;
+
+  use action approveSupplier;
+  use action rejectSupplier;
+  use action blockSupplier;
+  use action unblockSupplier;
+  use action reassessRisk;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _ComplianceDocuments { create; with draft; }
+  use association _RiskAssessments     { create; with draft; }
+  use association _Performance         { create; with draft; }
+  use association _AuditHistory        { with draft; }
+}
+
+define behavior for ZC_ComplianceDoc_M alias ComplianceDocument
+{
+  use update;
+  use delete;
+
+  use association _Supplier { with draft; }
+}
+
+define behavior for ZC_RiskAssessment_M alias RiskAssessment
+{
+  use update;
+  use delete;
+
+  use association _Supplier { with draft; }
+}
+
+define behavior for ZC_SupplierPerf_M alias Performance
+{
+  use update;
+  use delete;
+
+  use association _Supplier { with draft; }
+}
+
+define behavior for ZC_AuditHistory_M alias AuditHistory
+{
+  use delete;
+
+  use association _Supplier { with draft; }
+}

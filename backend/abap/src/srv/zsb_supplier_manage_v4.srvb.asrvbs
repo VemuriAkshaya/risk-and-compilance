@@ -1,0 +1,7 @@
+@EndUserText.label : 'Supplier Risk & Purchase Compliance OData V4 Service Binding'
+@OData.service.binding.type : #ODATA_V4_UI
+@OData.service.version : '0001'
+define service binding ZSB_SUPPLIER_MANAGE_V4 {
+  binding type : ODATA_V4_UI;
+  service : ZUI_SUPPLIER_MANAGE_O4;
+}

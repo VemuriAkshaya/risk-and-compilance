@@ -1,0 +1,24 @@
+{
+  "name": "sap-supplier-compliance-backend",
+  "version": "1.0.0",
+  "description": "SAP ABAP Cloud RAP OData V4 Backend for Supplier Risk & Purchase Compliance Management",
+  "main": "odata-v4/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node odata-v4/server.js",
+    "dev": "node --watch odata-v4/server.js",
+    "test": "node odata-v4/test-rules.js"
+  },
+  "keywords": [
+    "sap",
+    "abap-cloud",
+    "rap",
+    "restful-application-programming-model",
+    "cds",
+    "odata-v4",
+    "supplier-governance",
+    "hana-cloud"
+  ],
+  "author": "Enterprise Procurement Compliance Team",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,8 @@
+@EndUserText.label : 'Supplier Risk & Purchase Compliance Service Definition'
+define service ZUI_SUPPLIER_MANAGE_O4 {
+  expose ZC_Supplier_M       as Supplier;
+  expose ZC_ComplianceDoc_M  as ComplianceDocument;
+  expose ZC_RiskAssessment_M as RiskAssessment;
+  expose ZC_SupplierPerf_M   as SupplierPerformance;
+  expose ZC_AuditHistory_M   as AuditHistory;
+}

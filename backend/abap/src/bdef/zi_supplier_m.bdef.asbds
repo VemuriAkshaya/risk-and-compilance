@@ -1,0 +1,224 @@
+managed implementation in class zbp_i_supplier_m unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_Supplier_M alias Supplier
+persistent table zsup_supplier
+draft table zsup_supp_d
+lock master total etag LastChangedAt
+authorization master ( global, instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  association _ComplianceDocuments { create; with draft; }
+  association _RiskAssessments     { create; with draft; }
+  association _Performance         { create; with draft; }
+  association _AuditHistory        { create; with draft; }
+
+  -- Field controls
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+  field ( mandatory : create ) SupplierID, SupplierName, Country, Category;
+
+  -- Actions
+  action ( features : instance ) approveSupplier result [1] $self;
+  action ( features : instance ) rejectSupplier result [1] $self;
+  action ( features : instance ) blockSupplier result [1] $self;
+  action ( features : instance ) unblockSupplier result [1] $self;
+  action ( features : instance ) reassessRisk parameter ZA_ReassessRiskParam result [1] $self;
+
+  -- Determinations
+  determination determineInitialStatus on modify { create; }
+  determination determineComplianceExpiry on save { field Status; }
+
+  -- Validations
+  validation validateSupplierStatus on save { create; update; field Status; }
+  validation validateEmail on save { create; update; field Email; }
+  validation validateTaxNumber on save { create; update; field TaxNumber; }
+
+  -- Draft Actions
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare {
+    validation validateSupplierStatus;
+    validation validateEmail;
+    validation validateTaxNumber;
+    validation ComplianceDocument~validateComplianceDates;
+    validation RiskAssessment~validateRiskScore;
+    validation Performance~validatePerformanceScores;
+  }
+
+  mapping for zsup_supplier
+  {
+    SupplierID         = supplier_id;
+    SupplierName       = supplier_name;
+    Country            = country;
+    Address            = address;
+    City               = city;
+    State              = state;
+    PostalCode         = postal_code;
+    ContactPerson      = contact_person;
+    Email              = email;
+    Phone              = phone;
+    Category           = category;
+    TaxNumber          = tax_number;
+    Status             = status;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+/* ========================================================
+   COMPLIANCE DOCUMENT CHILD BEHAVIOR
+   ======================================================== */
+define behavior for ZI_ComplianceDoc_M alias ComplianceDocument
+persistent table zsup_doc
+draft table zsup_doc_d
+lock dependent by _Supplier
+authorization dependent by _Supplier
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  association _Supplier { with draft; }
+
+  field ( readonly ) SupplierID, CreatedBy, CreatedAt, LastChangedAt, LocalLastChangedAt;
+  field ( readonly : update ) DocumentID;
+  field ( mandatory : create ) DocumentID, DocumentType, DocumentNumber, IssueDate, ExpiryDate;
+
+  determination determineDocStatus on modify { create; field ExpiryDate; }
+  validation validateComplianceDates on save { create; update; field ExpiryDate, IssueDate; }
+
+  mapping for zsup_doc
+  {
+    DocumentID         = document_id;
+    SupplierID         = supplier_id;
+    DocumentType       = document_type;
+    DocumentNumber     = document_number;
+    IssueDate          = issue_date;
+    ExpiryDate         = expiry_date;
+    Status             = status;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+/* ========================================================
+   RISK ASSESSMENT CHILD BEHAVIOR
+   ======================================================== */
+define behavior for ZI_RiskAssessment_M alias RiskAssessment
+persistent table zsup_risk
+draft table zsup_risk_d
+lock dependent by _Supplier
+authorization dependent by _Supplier
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  association _Supplier { with draft; }
+
+  field ( readonly ) SupplierID, RiskLevel, CreatedBy, CreatedAt, LastChangedAt, LocalLastChangedAt;
+  field ( readonly : update ) RiskID;
+  field ( mandatory : create ) RiskID, RiskScore;
+
+  determination determineRiskLevel on modify { create; field RiskScore; }
+  determination determineRiskImpact on save { create; field RiskScore, RiskLevel; }
+  validation validateRiskScore on save { create; update; field RiskScore; }
+
+  mapping for zsup_risk
+  {
+    RiskID             = risk_id;
+    SupplierID         = supplier_id;
+    RiskScore          = risk_score;
+    RiskLevel          = risk_level;
+    RiskFactors        = risk_factors;
+    Comments           = comments;
+    AssessmentDate     = assessment_date;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+/* ========================================================
+   SUPPLIER PERFORMANCE CHILD BEHAVIOR
+   ======================================================== */
+define behavior for ZI_SupplierPerf_M alias Performance
+persistent table zsup_perf
+draft table zsup_perf_d
+lock dependent by _Supplier
+authorization dependent by _Supplier
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  association _Supplier { with draft; }
+
+  field ( readonly ) SupplierID, OverallScore, PerformanceStatus, CreatedBy, CreatedAt, LastChangedAt, LocalLastChangedAt;
+  field ( readonly : update ) PerformanceID;
+  field ( mandatory : create ) PerformanceID, QualityScore, DeliveryScore;
+
+  determination determineOverallScore on modify { create; field QualityScore, DeliveryScore; }
+  validation validatePerformanceScores on save { create; update; field QualityScore, DeliveryScore; }
+
+  mapping for zsup_perf
+  {
+    PerformanceID      = performance_id;
+    SupplierID         = supplier_id;
+    QualityScore       = quality_score;
+    DeliveryScore      = delivery_score;
+    OverallScore       = overall_score;
+    PerformanceStatus  = performance_status;
+    ReviewDate         = review_date;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+/* ========================================================
+   AUDIT HISTORY CHILD BEHAVIOR
+   ======================================================== */
+define behavior for ZI_AuditHistory_M alias AuditHistory
+persistent table zsup_audit
+draft table zsup_audit_d
+lock dependent by _Supplier
+authorization dependent by _Supplier
+etag master LocalLastChangedAt
+{
+  delete;
+
+  association _Supplier { with draft; }
+
+  field ( readonly ) AuditID, SupplierID, UserID, Action, OldStatus, NewStatus, ChangedAt, Comments;
+
+  mapping for zsup_audit
+  {
+    AuditID            = audit_id;
+    SupplierID         = supplier_id;
+    UserID             = user_id;
+    Action             = action;
+    OldStatus          = old_status;
+    NewStatus          = new_status;
+    ChangedAt          = changed_at;
+    Comments           = comments;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
